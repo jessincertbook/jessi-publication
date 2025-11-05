@@ -45,8 +45,12 @@ export default function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoding(true);
-
     try {
+      if (!formData.name || !formData.email || !formData.message) {
+        toast.error('Please fill all fields!');
+        setLoding(false);
+        return;
+      }
       const response = await fetch('https://mis.ijessi.com/api/send-mail', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -58,7 +62,7 @@ export default function App() {
         setFormData({ name: '', email: '', message: '' });
         setLoding(false);
       } else {
-        toast.error('Something went wrong. Please try again.');
+        toast.error('Failed to send!.');
         setLoding(false);
       }
     } catch (error) {
